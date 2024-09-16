@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Reservations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Field Reservations</h1>
+    </header>
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>Time Slot</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hour in schedules %}
+                <tr>
+                    <td>{{ hour }}</td>
+                    <td>
+                        {% if hour in reservations %}
+                        Reserved by {{ reservations[hour][0] }}
+                        {% else %}
+                        Available
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if hour not in reservations %}
+                        <a class="button" href="{{ url_for('reserve', hour=hour) }}">Reserve</a>
+                        {% else %}
+                        <a class="button button-danger" href="{{ url_for('cancel', hour=hour) }}">Cancel</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>
